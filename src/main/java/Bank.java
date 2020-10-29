@@ -12,4 +12,21 @@ public class Bank {
 		int divIgnodValue = Math.floorDiv(ignodValue, div);
 		return new Ignod(divIgnodValue);
 	}
+
+	public int ignodEurValue(Ignod[] ignods) {
+		int totalEuroValue=0;
+		for(Ignod ignod:ignods ){
+			totalEuroValue = totalEuroValue + ignod.getIgnodValue();
+		}
+		return totalEuroValue;
+	}
+
+	public int maxEurForIgnod(Ignod ignod){
+		int ignodExchangedValue = ignodEurValue(exchangeIgnod(ignod));
+		if (ignod.getIgnodValue() > ignodExchangedValue){
+			return ignod.getIgnodValue();
+		}
+		return ignodExchangedValue;
+	}
+
 }
