@@ -1,6 +1,11 @@
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Properties;
 
 public class StrangeLand {
@@ -11,16 +16,33 @@ public class StrangeLand {
 	}
 
 	public static void main(String[] args) {
+		Instant start = Instant.now();
 		StrangeLand strangeLand = new StrangeLand(new Bank());
-		System.out.println(String.format("Mxx amount of eur for Ignod: %d  is %d ", 0,strangeLand.getBestEurValueForIgnod(new Ignod(0))));
-		System.out.println(String.format("Mxx amount of eur for Ignod: %d  is %d ", 2,strangeLand.getBestEurValueForIgnod(new Ignod(2))));
-		System.out.println(String.format("Mxx amount of eur for Ignod: %d  is %d ", 12,strangeLand.getBestEurValueForIgnod(new Ignod(12))));
-		System.out.println(String.format("Mxx amount of eur for Ignod: %d  is %d ", 100,strangeLand.getBestEurValueForIgnod(new Ignod(100))));
-		System.out.println(String.format("Mxx amount of eur for Ignod: %d  is %d ", 400,strangeLand.getBestEurValueForIgnod(new Ignod(400))));
-		System.out.println(String.format("Mxx amount of eur for Ignod: %d  is %d ", 123456,strangeLand.getBestEurValueForIgnod(new Ignod(123456))));
-		System.out.println(String.format("Mxx amount of eur for Ignod: %d  is %d ", 654321,strangeLand.getBestEurValueForIgnod(new Ignod(654321))));
-		System.out.println(String.format("Mxx amount of eur for Ignod: %d  is %d ", 999999,strangeLand.getBestEurValueForIgnod(new Ignod(999999))));
-		System.out.println(String.format("Mxx amount of eur for Ignod: %d  is %d ", 1000000000,strangeLand.getBestEurValueForIgnod(new Ignod(1000000000))));
+		getIgnodsFromFile(args).forEach(ignod ->
+				System.out.println("Max amount of eur for Ignod: "+ ignod.getIgnodValue() +" is " + strangeLand.getBestEurValueForIgnod(ignod)));
+		Instant stop = Instant.now();
+		System.out.println(String.format("Total duration : %d", stop.toEpochMilli() - start.toEpochMilli() ));
+	}
+
+	private static List<Ignod> getIgnodsFromFile(String[] args) {
+		List<Ignod> ignods= new ArrayList<>();
+
+		BufferedReader reader;
+		try {
+			reader = new BufferedReader(new FileReader(args[0]));
+			String line = reader.readLine();
+			while (line != null) {
+				ignods.add(new Ignod(Integer.parseInt(line)));
+				// read next line
+				line = reader.readLine();
+			}
+			reader.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return ignods;
 	}
 
 	public int getBestEurValueForIgnod(Ignod ignod){
