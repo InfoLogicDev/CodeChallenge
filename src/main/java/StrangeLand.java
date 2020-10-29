@@ -20,8 +20,7 @@ public class StrangeLand {
 		StrangeLand strangeLand = new StrangeLand(new Bank());
 		getIgnodsFromFile(args).forEach(ignod ->
 				System.out.println("Max amount of eur for Ignod: "+ ignod.getIgnodValue() +" is " + strangeLand.getBestEurValueForIgnod(ignod)));
-		Instant stop = Instant.now();
-		System.out.println(String.format("Total duration : %d", stop.toEpochMilli() - start.toEpochMilli() ));
+		System.out.println("Total duration : " +  (Instant.now().getNano() - start.getNano()) );
 	}
 
 	private static List<Ignod> getIgnodsFromFile(String[] args) {
